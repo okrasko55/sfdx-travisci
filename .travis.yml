@@ -18,10 +18,13 @@ before_install:
 - sfdx --version
 - sfdx plugins --core
 - sfdx force:auth:jwt:grant --clientid $CONSUMERKEY --jwtkeyfile assets/server.key
-  --username $USERNAME --setdefaultdevhubusername
+  --username $USERNAME --setdefaultdevhubusername -a DevHub
 script:
+- mkdir mdapioutput
+- sfdx force:source:convert -d mdapioutput/
+- sfdx force:mdapi:deploy -d mdapioutput/ -u DevHub -w 100
 #- sfdx force:org:create -s -f config/project-scratch-def.json -a ciorg --wait 5
 #- sfdx force:org:display -u ciorg
 #- sfdx force:source:push -u ciorg
 #- sfdx force:org:delete -u ciorg -p
-- sfdx force:org:list
+#- sfdx force:org:list
